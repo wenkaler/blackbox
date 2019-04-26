@@ -63,7 +63,7 @@ begin
 		raise exception 'name must not be empty.';
 	end if;
 	if _data isnull then
-		raise exception 'setting must not be null.'
+		raise exception 'setting must not be null.';
 	end if;
 	update box.projects set "name" = "name", basic_setting = _data where "token" = t;
 	select row_to_json(f) into result from (select * from box.projects where "token" = t ) f;
@@ -112,21 +112,19 @@ begin
 	result = array(select row_to_json(f) from (select * from box.settings where id_project = projectID) f);
 	return result;
 end
-$function$
+$function$;
 
 -- Setting function --
-
-
 create or replace function box.update_setting_v1(t varchar, d json)
-returns integer
+returns json
 language plpgsql
 as $function$
 declare 
-	result int;
+	result json;
 begin
-	result = 0;
-	update box.settings set "status" = 'new', setting = d where "token" = t returning id into result;
-	if result = 0 then 
+	update box.settings set "status" = 'new', setting = d where "token" = t;
+	select row_to_json(f) into result from (select * from box.settings where "token" = t ) f;
+	if result isnull then 
 		raise exception 'The token (%) does not exist in the box.settings table.', t;		
 	end if;
 	return result;

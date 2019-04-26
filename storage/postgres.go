@@ -2,6 +2,7 @@ package storage
 
 import (
 	"database/sql"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"time"
@@ -104,7 +105,7 @@ func (s *Storage) FTQuery(f, token string) (b []byte, err error) {
 // use for func:
 // create_project
 // update_setting
-func (s *Storage) FTJQuery(f, t string, j []byte) (b []byte, err error) {
+func (s *Storage) FTJQuery(f, t string, j json.RawMessage) (b []byte, err error) {
 	err = s.DB.QueryRow("select "+f+"($1,$2)", t, j).Scan(&b)
 	if err != nil {
 		return nil, fmt.Errorf("FTJQuery: %v", err)
@@ -115,7 +116,7 @@ func (s *Storage) FTJQuery(f, t string, j []byte) (b []byte, err error) {
 // FTNJQuery return json. F - function name, T - token, N - name project, J - JSON.
 // use for func:
 // update_project
-func (s *Storage) FTNJQuery(f, t, n string, j []byte) (b []byte, err error) {
+func (s *Storage) FTNJQuery(f, t, n string, j json.RawMessage) (b []byte, err error) {
 	err = s.DB.QueryRow("select "+f+"($1,$2,$3)", t, n, j).Scan(&b)
 	if err != nil {
 		return nil, fmt.Errorf("FTJQuery: %v", err)

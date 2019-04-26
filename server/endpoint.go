@@ -8,14 +8,14 @@ import (
 )
 
 type requestFVJ struct {
-	Various string `json:"various"` // Various means that can contain different kind of character values. (name - project or token.)
-	Setting []byte `json:"setting"`
+	Various string          `json:"various"` // Various means that can contain different kind of character values. (name - project or token.)
+	Setting json.RawMessage `json:"setting"`
 }
 
 type requestFTNJ struct {
-	Token   string `json:"token"`
-	Name    string `json:"name"`
-	Setting []byte `json:"setting"`
+	Token   string          `json:"token"`
+	Name    string          `json:"name"`
+	Setting json.RawMessage `json:"setting"`
 }
 
 type requestFTV struct {
