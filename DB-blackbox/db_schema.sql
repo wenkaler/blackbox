@@ -203,6 +203,6 @@ begin
 	if projectID = 0 then 
 		raise exception 'The token (%) does not exist in the box.projects table.', t;		
 	end if;
-	delete from box.settings  where last_update_date <=  current_timestamp - "time" and project_id = projectID;
+	delete from box.settings  where last_update_date <=  current_timestamp - "time" and id_project = projectID;
 end
 $function$;
